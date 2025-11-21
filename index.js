@@ -36,9 +36,16 @@ const sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env
     tableName:"emails", 
     timestamps:false
 })
+sequelize.authenticate()
+.then(() => {
+    console.log("Connected to supabase successfully")
+})
+.then(() => {
+    return sequelize.sync();
+})
+.then(() => console.log("emails table has been synced"))
+.catch((err) => console.log("Error connecting to the supabase", err))
 
-emails.sync()
-.then((res) => console.log("Connected to emails successfully", res))
 
 app.get("/", async (req, res) => { 
     try{ 
