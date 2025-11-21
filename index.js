@@ -12,17 +12,21 @@ app.use(express.json())
 
 let sequelize;
 try {
-  sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    logging: console.log,
-    dialect: "postgres",
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
+  if (process.env.DB_URL) {
+    sequelize = new Sequelize(process.env.DB_URL);
+  } else {
+    sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+      host: process.env.DB_HOST,
+      logging: console.log,
+      dialect: "postgres",
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
       }
-    }
-  });
+    });
+  }
 } catch (err) {
   console.error("Failed to initialize Sequelize", err);
   sequelize = null;
