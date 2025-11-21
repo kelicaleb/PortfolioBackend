@@ -10,17 +10,11 @@ const port = process.env.PORT || 10000;
 app.use(express.json())
 
 
-// Instead of separate variables, use DATABASE_URL
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  logging: console.log, 
-  dialect: "postgres",
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false // Required for Render
-    }
-  }
-})
+const sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+    host:process.env.DB_HOST, 
+    logging: console.log, 
+    dialect: "postgres"
+ })
 
 
  const emails = sequelize.define('emails', { 
