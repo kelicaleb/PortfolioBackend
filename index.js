@@ -66,7 +66,9 @@ app.get("/", async (req, res) => {
         return res.status(500).json({error: "Failed to fetch emails"});
     }
 })
-
+app.listen(port, () => {
+    console.log(`Server is running in ${port}`)
+})
 
 export default app;
 
