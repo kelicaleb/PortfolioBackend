@@ -6,7 +6,7 @@ import { Sequelize, DataTypes} from 'sequelize'
 
 const app = express()
 dotenv.config()
-const port = process.env.PORT;
+const port = process.env.PORT || 10000;
 app.use(express.json())
 
 
