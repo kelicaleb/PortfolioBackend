@@ -48,7 +48,7 @@ if (sequelize) {
   emails = null;
 }
 
-
+// get end point for emails 
 
 app.get("/", async (req, res) => {
     try{
