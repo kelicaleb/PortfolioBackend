@@ -6,6 +6,8 @@ import { Sequelize, DataTypes} from 'sequelize'
 
 const app = express()
 dotenv.config()
+// For Node.js apps, you might need:
+app.set('trust proxy', true);
 const port = process.env.PORT || 10000;
 app.use(express.json())
 
@@ -14,6 +16,20 @@ let sequelize;
 try {
   if (process.env.DB_URL) {
     sequelize = new Sequelize(process.env.DB_URL);
+  } else if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+    const url = new URL(process.env.SUPABASE_URL);
+    const projectRef = url.hostname.split('.')[0];
+    sequelize = new Sequelize("postgres", "postgres", process.env.SUPABASE_SERVICE_KEY, {
+      host: `db.${projectRef}.supabase.co`,
+      logging: console.log,
+      dialect: "postgres",
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    });
   } else {
     sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
       host: process.env.DB_HOST,
