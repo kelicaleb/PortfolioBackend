@@ -9,8 +9,8 @@ app.use(cors())
 app.use(express.json())
 const port = process.env.PORT
 
-const sequelize = new Sequelize(process.env.DB_NAME || "postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
+const databaseUrl = `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:5432/${process.env.DB_NAME}`;
+const sequelize = new Sequelize(databaseUrl, {
     logging: console.log,
     dialect: "postgres",
     dialectOptions: {
@@ -66,6 +66,6 @@ if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => {
         console.log("server is running on port", port)
     })
-};
+}
 
 export default app;
