@@ -11,7 +11,7 @@ app.set('trust proxy', true);
 const port = process.env.PORT || 10000;
 app.use(express.json())
 
-
+//change in the superbase variables 
 let sequelize;
 try {
   if (process.env.DB_URL) {
