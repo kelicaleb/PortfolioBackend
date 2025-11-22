@@ -12,15 +12,15 @@ app.use(express.json())
 const port = process.env.PORT
 
 
-const sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+const sequelize = new Sequelize(process.env.DB_NAME || "postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
     host: process.env.DB_HOST,
     logging: console.log,
     dialect: "postgres",
     dialectOptions: {
-        ssl: {
+        ssl: process.env.NODE_ENV === 'production' ? {
             require: true,
             rejectUnauthorized: false
-        }
+        } : false
     }
 });
 
@@ -50,10 +50,13 @@ if (sequelize) {
 } else {
   emails = null;
 }
-sequelize.authenticate()
-.then(() => emails.sync())
-.then((res) => console.log("connected to emails successfully"))
-.catch((err) => console.log("error connecting to emails", err))
+try {
+  await sequelize.authenticate();
+  await emails.sync();
+  console.log("connected to emails successfully");
+} catch (err) {
+  console.log("error connecting to emails", err);
+}
 
 app.get("/", async(req, res)=> 
 {
