@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { Sequelize, DataTypes} from 'sequelize'
+import { createClient } from '@supabase/supabase-js'
 import cors from 'cors'
 
 const app = express()
@@ -9,50 +9,14 @@ app.use(cors())
 app.use(express.json())
 const port = process.env.PORT
 
-const databaseUrl = `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:5432/${process.env.DB_NAME}`;
-const sequelize = new Sequelize(databaseUrl, {
-    logging: console.log,
-    dialect: "postgres",
-    dialectOptions: {
-        ssl: process.env.NODE_ENV === 'production' ? {
-            require: true,
-            rejectUnauthorized: false
-        } : false
-    }
-});
-
-let emails;
-if (sequelize) {
-  emails = sequelize.define("emails", {
-    emails_id:{
-        type: DataTypes.INTEGER,
-        primaryKey:true,
-        allowNull: true,
-        autoIncrement:true
-    },
-    emails: {
-        type: DataTypes.STRING,
-        allowNull:false
-    },
-    messages:{
-        type: DataTypes.STRING,
-        allowNull: false
-    }
-},
-{
-    tableName:"emails",
-    timestamps:false
-});
-} else {
-  emails = null;
-}
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
 
 app.get("/", async(req, res)=>
 {
     try{
-        await sequelize.authenticate();
-        const findEmails = await emails.findAll()
-        return res.status(200).json(findEmails)
+        const { data, error } = await supabase.from('emails').select('*')
+        if (error) throw error
+        return res.status(200).json(data)
 
     }
     catch(err){
