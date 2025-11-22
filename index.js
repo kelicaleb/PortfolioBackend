@@ -12,10 +12,16 @@ app.use(express.json())
 const port = process.env.PORT
 
 
-const sequelize = new Sequelize("postgres", process.env.USERNAME, process.env.PASSWORD, { 
-    host: process.env.HOST, 
-    logging: console.log, 
-    dialect: "postgres"
+const sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    logging: console.log,
+    dialect: "postgres",
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
 });
 
 
@@ -44,24 +50,31 @@ if (sequelize) {
 } else {
   emails = null;
 }
+sequelize.authenticate()
+.then(() => emails.sync())
+.then((res) => console.log("connected to emails successfully"))
+.catch((err) => console.log("error connecting to emails", err))
 
-app.get("/", async (req, res) => {
-  try {
-    if (!emails) {
-      return res.status(500).json({error: "Database not initialized"});
+app.get("/", async(req, res)=> 
+{
+    try{ 
+        const findEmails = await emails.findAll()
+        return res.status(200).json(findEmails)
+
     }
-    await sequelize.authenticate();
-    await sequelize.sync();
-    const findEmails = await emails.findAll();
-    return res.status(200).json(findEmails);
-  } catch (err) {
-    console.error("error fetching emails", err);
-    return res.status(500).json({error: "Failed to fetch emails"});
-  }
-});
+    catch(err){ 
+        console.log("error fetching emails", err)
+        return res.status(500).json({message: "error fecthing emails"})
+    }
+})
+
+
+
 
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+    app.listen(port, () => {
+        console.log("server is running on port", port)
+    })
 }
 
 export default app;
