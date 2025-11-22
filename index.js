@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { createClient } from '@supabase/supabase-js'
+import { Sequelize } from 'sequelize'
 import cors from 'cors'
 
 const app = express()
@@ -9,17 +9,21 @@ app.use(cors())
 app.use(express.json())
 const port = process.env.PORT
 
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    dialect: 'postgres',
+    logging: false
+})
+
 app.get("/", async(req, res)=>
 {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-        console.log("Missing Supabase environment variables")
+    if (!process.env.DB_NAME || !process.env.DB_USERNAME || !process.env.DB_PASSWORD || !process.env.DB_HOST) {
+        console.log("Missing database environment variables")
         return res.status(500).json({message: "Server configuration error"})
     }
     try{
-        const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
-        const { data, error } = await supabase.from('emails').select('*')
-        if (error) throw error
-        return res.status(200).json(data)
+        const [results] = await sequelize.query('SELECT * FROM emails')
+        return res.status(200).json(results)
 
     }
     catch(err){
