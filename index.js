@@ -1,114 +1,67 @@
-import express from 'express'; 
-import dotenv from 'dotenv'; 
+import express from 'express'
+import dotenv from 'dotenv'
 import { Sequelize, DataTypes} from 'sequelize'
+import cors from 'cors'
 
 
 
 const app = express()
-dotenv.config()
-// For Node.js apps, you might need:
-app.set('trust proxy', true);
-const port = process.env.PORT || 10000;
+dotenv.config();
+app.use(cors())
 app.use(express.json())
+const port = process.env.PORT
 
-//change in the superbase variables 
-let sequelize;
-try {
-  if (process.env.DB_URL) {
-    sequelize = new Sequelize(process.env.DB_URL);
-  } else if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
-    const url = new URL(process.env.SUPABASE_URL);
-    const projectRef = url.hostname.split('.')[0];
-    sequelize = new Sequelize("postgres", "postgres", process.env.SUPABASE_SERVICE_KEY, {
-      host: `db.${projectRef}.supabase.co`,
-      logging: console.log,
-      dialect: "postgres",
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false
-        },
-        connect: {
-          family: 4
-        }
-      }
-    });
-  } else {
-    sequelize = new Sequelize("postgres", process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-      host: process.env.DB_HOST,
-      logging: console.log,
-      dialect: "postgres",
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false
-        },
-        connect: {
-          family: 4
-        }
-      }
-    });
-  }
-} catch (err) {
-  console.error("Failed to initialize Sequelize", err);
-  sequelize = null;
-}
+
+const sequelize = new Sequelize("postgres", process.env.USERNAME, process.env.PASSWORD, { 
+    host: process.env.HOST, 
+    logging: console.log, 
+    dialect: "postgres"
+});
 
 
 let emails;
 if (sequelize) {
-  emails = sequelize.define('emails', {
-     emails_id:{
-         type: DataTypes.INTEGER,
-         allowNull:true,
-         primaryKey:true
-     },
-     emails:{
-         type: DataTypes.STRING,
-         allowNull:false
-     },
-     messages:{
-         type: DataTypes.STRING,
-         allowNull: false
-     }
-  },
- {
-     tableName:"emails",
-     timestamps:false
- });
+  emails = sequelize.define("emails", {
+    emails_id:{
+        type: DataTypes.INTEGER,
+        primaryKey:true,
+        allowNull: true,
+        autoIncrement:true
+    },
+    emails: {
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    messages:{
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+},
+{
+    tableName:"emails",
+    timestamps:false
+});
 } else {
   emails = null;
 }
 
-// get end point for emails 
-
 app.get("/", async (req, res) => {
-    try{
-        // Ensure DB is connected
-        if (!emails) {
-            return res.status(500).json({error: "Database not initialized"});
-        }
-        await sequelize.authenticate();
-        await sequelize.sync();
-        const findEmails = await emails.findAll()
-        return res.status(200).json(findEmails)
+  try {
+    if (!emails) {
+      return res.status(500).json({error: "Database not initialized"});
     }
-    catch(err){
-        console.error("error fetching emails", err)
-        return res.status(500).json({error: "Failed to fetch emails"});
-    }
-})
-app.listen(port, () => {
-    console.log(`Server is running in ${port}`)
-})
+    await sequelize.authenticate();
+    await sequelize.sync();
+    const findEmails = await emails.findAll();
+    return res.status(200).json(findEmails);
+  } catch (err) {
+    console.error("error fetching emails", err);
+    return res.status(500).json({error: "Failed to fetch emails"});
+  }
+});
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
 }
 
 export default app;
-
-
-
-
-
