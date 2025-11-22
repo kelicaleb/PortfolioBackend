@@ -26,22 +26,6 @@ app.get("/", async(req, res)=>
 })
 
 if (process.env.NODE_ENV !== 'production') {
-{
-    try{ 
-        const findEmails = await emails.findAll()
-        return res.status(200).json(findEmails)
-
-    }
-    catch(err){ 
-        console.log("error fetching emails", err)
-        return res.status(500).json({message: "error fecthing emails"})
-    }
-})
-
-
-
-
-if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => {
         console.log("server is running on port", port)
     })
