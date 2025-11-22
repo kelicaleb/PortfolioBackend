@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/kelicaleb/PortfolioBackend#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
