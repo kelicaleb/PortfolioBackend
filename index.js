@@ -17,16 +17,10 @@ app.get("/", async(req, res)=>
     }
     try{
         const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-            host: 'db.vkzopajtrksiehxqhzxo.supabase.co',
-            port: 5432,
+            host: process.env.DB_HOST,
+            port: 6543 || 5432,
             dialect: 'postgres',
-            logging: false,
-            dialectOptions: {
-                ssl: {
-                    require: true,
-                    rejectUnauthorized: false
-                }
-            }
+            logging: false
         })
         await sequelize.authenticate()
         const [results] = await sequelize.query('SELECT * FROM emails')
