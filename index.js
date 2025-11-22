@@ -50,15 +50,25 @@ if (sequelize) {
 } else {
   emails = null;
 }
-try {
-  await sequelize.authenticate();
-  await emails.sync();
-  console.log("connected to emails successfully");
-} catch (err) {
-  console.log("error connecting to emails", err);
-}
 
-app.get("/", async(req, res)=> 
+app.get("/", async(req, res)=>
+{
+    try{
+        await sequelize.authenticate();
+        await emails.sync();
+        const findEmails = await emails.findAll()
+        return res.status(200).json(findEmails)
+
+    }
+    catch(err){
+        console.log("error fetching emails", err)
+        return res.status(500).json({message: "error fecthing emails"})
+    }
+})
+
+
+
+if (process.env.NODE_ENV !== 'production') { 
 {
     try{ 
         const findEmails = await emails.findAll()
