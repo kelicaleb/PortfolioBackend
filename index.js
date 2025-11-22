@@ -27,6 +27,9 @@ try {
         ssl: {
           require: true,
           rejectUnauthorized: false
+        },
+        connect: {
+          family: 4
         }
       }
     });
@@ -39,6 +42,9 @@ try {
         ssl: {
           require: true,
           rejectUnauthorized: false
+        },
+        connect: {
+          family: 4
         }
       }
     });
