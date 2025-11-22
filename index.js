@@ -51,6 +51,7 @@ app.get("/", async(req, res)=>
 {
     try{
         await sequelize.authenticate();
+        await emails.sync();
         const findEmails = await emails.findAll()
         return res.status(200).json(findEmails)
 
