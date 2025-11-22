@@ -53,7 +53,7 @@ if (sequelize) {
 try {
   await sequelize.authenticate();
   await emails.sync();
-  console.log("connected to emails successfully");
+  console.log("connected to emails successfully")
 } catch (err) {
   console.log("error connecting to emails", err);
 }
