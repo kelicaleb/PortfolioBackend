@@ -12,6 +12,10 @@ const port = 4000
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
 
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Portfolio Backend API is running' })
+})
+
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
