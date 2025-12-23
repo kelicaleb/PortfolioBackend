@@ -93,7 +93,7 @@ app.post('/emails', async(req, res)=>{
         const userResult = await transporter.sendMail(userMailOptions)
         console.log('Confirmation email sent: ' + userResult.response)
 
-        return res.status(201).json({ message: 'Message sent successfully' })
+        return res.status(201).json({ message: 'message sent successfully' })
     } catch (err) {
         console.error('Error processing request:', err)
         return res.status(500).json({ message: 'Error processing request', error: err.message })
