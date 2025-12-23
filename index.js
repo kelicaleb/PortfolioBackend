@@ -66,14 +66,10 @@ app.post('/emails', async(req, res)=>{
                 </div>
             `
         }
+        // Send email to admin
         console.log('Sending email to admin...')
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending email to admin', error)
-            } else {
-                console.log('Email sent to admin: ' + info.response)
-            }
-        })
+        const adminResult = await transporter.sendMail(mailOptions)
+        console.log('Email sent to admin: ' + adminResult.response)
 
         // Send confirmation to user
         const userMailOptions = {
@@ -94,18 +90,13 @@ app.post('/emails', async(req, res)=>{
             `
         }
         console.log('Sending confirmation email to user...')
-        transporter.sendMail(userMailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending confirmation email', error)
-            } else {
-                console.log('Confirmation email sent: ' + info.response)
-            }
-        })
+        const userResult = await transporter.sendMail(userMailOptions)
+        console.log('Confirmation email sent: ' + userResult.response)
 
         return res.status(201).json({ message: 'Message sent successfully' })
     } catch (err) {
-        console.error('Error saving email', err)
-        return res.status(500).json({ message: 'Error saving email' })
+        console.error('Error processing request:', err)
+        return res.status(500).json({ message: 'Error processing request', error: err.message })
     }
 })
 
