@@ -71,7 +71,7 @@ app.post('/emails', async(req, res)=>{
         const adminResult = await transporter.sendMail(mailOptions)
         console.log('Email sent to admin: ' + adminResult.response)
 
-        // Send confirmation to user
+        // Send confirmation to user with purple theme
         const userMailOptions = {
             from: 'kelicaleb7@gmail.com',
             to: email,
