@@ -84,7 +84,7 @@ app.post('/emails', async(req, res)=>{
                     <p style="font-size: 16px; line-height: 1.5; color: #555;">I typically respond within 24-48 hours. If your inquiry is urgent, please feel free to follow up.</p>
                     <p style="font-size: 16px; line-height: 1.5; color: #555;">Best regards,<br>Caleb</p>
                     <div style="text-align: center; margin-top: 30px;">
-                        <a href="https://yourportfolio.com" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit My Portfolio</a>
+                        <a href="https://kelicaleb.github.io/portfolio/" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit My Portfolio</a>
                     </div>
                 </div>
             `
