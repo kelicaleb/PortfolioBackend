@@ -55,14 +55,14 @@ app.post('/emails', async(req, res)=>{
             to: 'kelicaleb7@gmail.com',
             subject: 'New Contact Form Submission - Portfolio',
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-                    <h2 style="color: #333; text-align: center;">New Message from Portfolio Contact Form</h2>
-                    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
-                        <p><strong>From:</strong> ${email}</p>
-                        <p><strong>Message:</strong></p>
-                        <p style="white-space: pre-wrap;">${message}</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: linear-gradient(135deg, #f3e8ff, #e9d5ff);">
+                    <h2 style="color: #6b21a8; text-align: center;">New Message from Portfolio Contact Form</h2>
+                    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #ddd;">
+                        <p><strong style="color: #7c3aed;">From:</strong> ${email}</p>
+                        <p><strong style="color: #7c3aed;">Message:</strong></p>
+                        <p style="white-space: pre-wrap; color: #555;">${message}</p>
                     </div>
-                    <p style="text-align: center; color: #666;">Please respond promptly to maintain good communication.</p>
+                    <p style="text-align: center; color: #7c3aed;">Please respond promptly to maintain good communication.</p>
                 </div>
             `
         }
@@ -77,14 +77,14 @@ app.post('/emails', async(req, res)=>{
             to: email,
             subject: 'Thank You for Contacting Me',
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
-                    <h2 style="color: #333; text-align: center;">Thank You for Your Message</h2>
-                    <p style="font-size: 16px; line-height: 1.5; color: #555;">Dear Visitor,</p>
-                    <p style="font-size: 16px; line-height: 1.5; color: #555;">Thank you for reaching out through my portfolio. I have received your message and will review it shortly.</p>
-                    <p style="font-size: 16px; line-height: 1.5; color: #555;">I typically respond within 24-48 hours. If your inquiry is urgent, please feel free to follow up.</p>
-                    <p style="font-size: 16px; line-height: 1.5; color: #555;">Best regards,<br>Caleb</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: linear-gradient(135deg, #f3e8ff, #e9d5ff);">
+                    <h2 style="color: #6b21a8; text-align: center;">Thank You for Your Message</h2>
+                    <p style="font-size: 16px; line-height: 1.5; color: #7c3aed;">Dear Visitor,</p>
+                    <p style="font-size: 16px; line-height: 1.5; color: #7c3aed;">Thank you for reaching out through my portfolio. I have received your message and will review it shortly.</p>
+                    <p style="font-size: 16px; line-height: 1.5; color: #7c3aed;">I typically respond within 24-48 hours. If your inquiry is urgent, please feel free to follow up.</p>
+                    <p style="font-size: 16px; line-height: 1.5; color: #7c3aed;">Best regards,<br>Caleb</p>
                     <div style="text-align: center; margin-top: 30px;">
-                        <a href="https://kelicaleb.github.io/portfolio/" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit My Portfolio</a>
+                        <a href="https://kelicaleb.github.io/portfolio/" style="background: linear-gradient(135deg, #8b5cf6, #a855f7); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);">Visit My Portfolio</a>
                     </div>
                 </div>
             `
