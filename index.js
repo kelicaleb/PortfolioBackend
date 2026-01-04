@@ -39,7 +39,7 @@ app.get('/emails', async(req, res)=>{
     }
 })
 
-app.post('/email', async(req, res)=>{
+app.post('/emails', async(req, res)=>{
     const { email, message } = req.body
     if (!email || !message) {
         return res.status(400).json({ message: "Missing required fields: email, message" })
